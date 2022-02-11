@@ -1,0 +1,85 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class PlayerScript : MonoBehaviour
+{
+    float moveHorizontal;
+    float moveVertical;
+    public Text countText;
+    private int count;
+    public Text winText;
+    public Text loseText;
+    private Rigidbody myRigidbody;
+    private Vector3 movement;
+    public float speed;
+    public float totalTime;
+    public Text timerText;
+    public float timeLeft;
+    public bool gameWon;
+    public GameObject resetbutt;
+    public GameObject nextLevelButton;
+    
+    void Start()
+    {
+        myRigidbody = GetComponent<Rigidbody>();
+        count = 0;
+        SetCountText ();
+        winText.text = "";
+        loseText.text = "";
+        countText.text = "Count: " + count.ToString ();
+        timerText.text = "Timer:" + timeLeft.ToString();
+        totalTime = 30;
+        timeLeft = totalTime;
+        resetbutt.SetActive(false);
+        nextLevelButton.SetActive(false);
+    }
+
+    void Update()
+    {
+        moveHorizontal = Input.GetAxis("Horizontal");
+        moveVertical = Input.GetAxis("Vertical");
+        movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+        myRigidbody.AddForce(movement * speed * Time.deltaTime);
+        timerText.text = "Timer:" + timeLeft.ToString();
+        if(gameWon == false)
+        {
+            timeLeft -= Time.deltaTime;
+            if(timeLeft < 0)
+            {
+                gameObject.SetActive(false);
+                gameWon = true;
+                resetbutt.SetActive(true);
+                loseText.text = "YOU LOSE! Try Again!";
+                timerText.text = "Timer:0";
+            }
+        }
+        //Debug.Log(moveVertical);
+        //Debug.Log(moveHorizontal);
+    }
+    void OnTriggerEnter(Collider other) 
+    {
+        if (other.gameObject.CompareTag("Collectible"))
+        {
+            other.gameObject.SetActive(false);
+            count = count + 1;
+            SetCountText ();
+        }
+    }
+
+    void SetCountText ()
+    {
+        countText.text = "Count: " + count.ToString ();
+        if (count >= 4)
+        {
+            winText.text = "Your A Winner!";
+            gameWon = true;
+            if(gameWon = true)
+            {
+                gameObject.SetActive(false);
+                nextLevelButton.SetActive(true);
+            }
+        }
+    }
+}
