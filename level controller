@@ -1,0 +1,23 @@
+using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class LevelController : MonoBehaviour 
+{
+    public void Lvl1()
+    {
+       SceneManager.LoadScene("lvl1");
+    }
+	  public void Lvl2()
+    {
+	    SceneManager.LoadScene("lvl2");
+    }
+    public void MainMenu()
+    {
+	    SceneManager.LoadScene("MainMenu");
+    }
+    public void Congrats()
+    {
+	    SceneManager.LoadScene("Congrats");
+    }
+}
